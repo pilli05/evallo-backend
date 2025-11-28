@@ -25,6 +25,27 @@ const userService = {
     await userRepository.createEmployee(employee);
     return;
   },
+
+  updateEmployee: async (
+    teamId,
+    userId,
+    employeeId,
+    employeeName,
+    employeeEmail,
+    employeeDesignation,
+    employeePlatform
+  ) => {
+    await userRepository.updateEmployee(
+      teamId,
+      userId,
+      employeeId,
+      employeeName,
+      employeeEmail,
+      employeeDesignation,
+      employeePlatform
+    );
+    return;
+  },
 };
 
 module.exports = userService;

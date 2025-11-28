@@ -40,10 +40,10 @@ const userRepository = {
     );
 
     const mergedTeams = teams.map((team) => {
-      const count = counts.find((count) => count.id === team.id);
+      const count = counts.find((c) => Number(c.id) === Number(team.id));
       return {
         ...team,
-        teams_count: count.teams_count,
+        teams_count: count ? count.teams_count : 0,
       };
     });
 
@@ -64,6 +64,12 @@ const userRepository = {
       `UPDATE teams SET team_name = ? WHERE id = ?`,
       [teamName, teamId]
     );
+    return rows;
+  },
+
+  deleteTeam: async (teamId) => {
+    const pool = getPool();
+    const [rows] = await pool.query(`DELETE FROM teams WHERE id = ?`, [teamId]);
     return rows;
   },
 
@@ -108,6 +114,47 @@ const userRepository = {
       `SELECT * FROM employee WHERE user_id = ?`,
       [userId]
     );
+    return rows;
+  },
+
+  getEmployeeById: async (employeeId) => {
+    const pool = getPool();
+    const [rows] = await pool.query(`SELECT * FROM employee WHERE id = ?`, [
+      employeeId,
+    ]);
+    return rows[0];
+  },
+
+  updateEmployee: async (
+    teamId,
+    userId,
+    employeeId,
+    employeeName,
+    employeeEmail,
+    employeeDesignation,
+    employeePlatform
+  ) => {
+    const pool = getPool();
+    const [rows] = await pool.query(
+      `UPDATE employee SET team_id = ?, user_id = ?, employee_name = ?, employee_email = ?, employee_designation = ?, employee_platform = ? WHERE id = ?`,
+      [
+        teamId,
+        userId,
+        employeeName,
+        employeeEmail,
+        employeeDesignation,
+        employeePlatform,
+        employeeId,
+      ]
+    );
+    return rows;
+  },
+
+  deleteEmployee: async (employeeId) => {
+    const pool = getPool();
+    const [rows] = await pool.query(`DELETE FROM employee WHERE id = ?`, [
+      employeeId,
+    ]);
     return rows;
   },
 

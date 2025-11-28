@@ -19,6 +19,8 @@ userRouter.get("/teams/:id", authMiddleware, userController.getTeamById);
 
 userRouter.put("/teams/update", authMiddleware, userController.updateTeams);
 
+userRouter.delete("/teams/:id", authMiddleware, userController.deleteTeam);
+
 userRouter.post(
   "/createEmployee",
   authMiddleware,
@@ -26,6 +28,20 @@ userRouter.post(
 );
 
 userRouter.get("/employee", authMiddleware, userController.getEmployee);
+
+userRouter.get("/employee/:id", authMiddleware, userController.getEmployeeById);
+
+userRouter.put(
+  "/employee/update",
+  authMiddleware,
+  userController.updateEmployee
+);
+
+userRouter.delete(
+  "/employee/:id",
+  authMiddleware,
+  userController.deleteEmployee
+);
 
 userRouter.get("/employeeTeam", authMiddleware, userController.getEmployeeTeam);
 
