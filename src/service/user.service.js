@@ -21,9 +21,24 @@ const userService = {
     return;
   },
 
+  getTeamById: async (teamId) => {
+    const team = await userRepository.getTeamById(teamId);
+    return team;
+  },
+
+  deleteTeam: async (teamId) => {
+    await userRepository.deleteTeam(teamId);
+    return;
+  },
+
   createEmployee: async (employee) => {
     await userRepository.createEmployee(employee);
     return;
+  },
+
+  getEmployee: async (userId) => {
+    const employee = await userRepository.getEmployee(userId);
+    return employee;
   },
 
   updateEmployee: async (
@@ -44,6 +59,11 @@ const userService = {
       employeeDesignation,
       employeePlatform
     );
+    return;
+  },
+
+  deleteEmployee: async (employeeId) => {
+    await userRepository.deleteEmployee(employeeId);
     return;
   },
 };

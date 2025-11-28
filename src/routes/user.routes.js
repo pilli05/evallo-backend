@@ -43,6 +43,8 @@ userRouter.delete(
   userController.deleteEmployee
 );
 
+userRouter.get("/logs", authMiddleware, userController.getLogs);
+
 userRouter.get("/employeeTeam", authMiddleware, userController.getEmployeeTeam);
 
 module.exports = userRouter;

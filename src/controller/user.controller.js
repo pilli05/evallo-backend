@@ -1,3 +1,4 @@
+const logsHelper = require("../helper/logs");
 const userRepository = require("../repository/user.repository");
 const userService = require("../service/user.service");
 
@@ -8,6 +9,7 @@ const userController = {
     const team = { userId, teamName };
 
     await userService.createTeam(team);
+    await logsHelper(userId, req.user.name, `created a team ${teamName}`);
     res.status(201).json({ message: "Team created successfully" });
   },
 
@@ -22,19 +24,23 @@ const userController = {
 
   getTeamById: async (req, res) => {
     const teamId = req.params.id;
-    const team = await userRepository.getTeamById(teamId);
+    const team = await userService.getTeamById(teamId);
     res.status(200).json({ message: "Team fetched successfully", team: team });
   },
 
   updateTeams: async (req, res) => {
     const { teamId, teamName } = req.body;
+    const userId = req.user.id;
     await userService.updateTeams(teamId, teamName);
+    await logsHelper(userId, req.user.name, `updated to team ${teamName}`);
     res.status(200).json({ message: "Team updated successfully" });
   },
 
   deleteTeam: async (req, res) => {
     const teamId = req.params.id;
-    await userRepository.deleteTeam(teamId);
+    const userId = req.user.id;
+    await userService.deleteTeam(teamId);
+    await logsHelper(userId, req.user.name, `deleted a team ${teamId}`);
     res.status(200).json({ message: "Team deleted successfully" });
   },
 
@@ -67,12 +73,17 @@ const userController = {
         .json({ message: "Employee with this email already exists" });
     }
     await userService.createEmployee(employee);
+    await logsHelper(
+      userId,
+      req.user.name,
+      `created a employee ${employeeName}`
+    );
     res.status(201).json({ message: "Employee created successfully" });
   },
 
   getEmployee: async (req, res) => {
     const userId = req.user.id;
-    const result = await userRepository.getEmployee(userId);
+    const result = await userService.getEmployee(userId);
     res
       .status(200)
       .json({ message: "Employees fetches successfully", employee: result });
@@ -105,13 +116,32 @@ const userController = {
       employeeDesignation,
       employeePlatform
     );
+    await logsHelper(
+      userId,
+      req.user.name,
+      `updated a employee ${employeeName}`
+    );
     res.status(200).json({ message: "Employee updated successfully" });
   },
 
   deleteEmployee: async (req, res) => {
+    const userId = req.user.id;
     const employeeId = req.params.id;
-    await userRepository.deleteEmployee(employeeId);
+    await userService.deleteEmployee(employeeId);
+    await logsHelper(
+      userId,
+      req.user.name,
+      `deleted to employee ${employeeId}`
+    );
     res.status(200).json({ message: "Employee deleted successfully" });
+  },
+
+  getLogs: async (req, res) => {
+    const userId = req.user.id;
+    const result = await userRepository.getLogs(userId);
+    res
+      .status(200)
+      .json({ message: "Logs fetches successfully", logs: result });
   },
 
   getEmployeeTeam: async (req, res) => {

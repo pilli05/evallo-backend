@@ -158,6 +158,14 @@ const userRepository = {
     return rows;
   },
 
+  getLogs: async (userId) => {
+    const pool = getPool();
+    const [rows] = await pool.query(`SELECT * FROM logs WHERE user_id = ?`, [
+      userId,
+    ]);
+    return rows;
+  },
+
   getEmployeeTeam: async (userId) => {
     const pool = getPool();
     const [rows] = await pool.query(

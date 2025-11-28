@@ -1,5 +1,6 @@
 const authRepository = require("../repository/auth.repository");
 const authService = require("../service/auth.service");
+const logsHelper = require("../helper/logs");
 
 const authController = {
   register: async (req, res) => {
@@ -34,6 +35,7 @@ const authController = {
         return res.status(400).json({ message: "Invalid Email or Password" });
       }
       const token = await authService.generateToken(user);
+      await logsHelper(user.id, user.name, `logged in with email ${email}`);
       res.status(200).json({ token: token, message: "Login successful" });
     } catch (error) {
       console.error(error);
