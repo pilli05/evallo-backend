@@ -7,14 +7,7 @@ let pool;
 const connectDB = async () => {
   try {
     pool = mysql.createPool({
-      host: "localhost",
-      user: "root",
-      password: "sombabu@0505",
-      database: "hrms",
-      port: 3306,
-      waitForConnections: true,
-      connectionLimit: 10,
-      queueLimit: 0,
+      uri: process.env.DATABASE_URL,
     });
 
     try {
